@@ -16,15 +16,15 @@ int16_t want_k = 45;
 bool controller[12] = {false}; // r2,l2,r,l, up, down, left, right, circle, cross, triangle, square
 Ticker pid_starter;
 
-void pid_tick()
-{
-    // pid_control のシグネチャに合わせて呼ぶ（グローバル変数を参照）
-    pid_control(pwm1[2], encoder_value[0], want_k);
-}
+// void pid_tick()
+// {
+//     // pid_control のシグネチャに合わせて呼ぶ（グローバル変数を参照）
+//     pid_control(pwm1[2], encoder_value[0], want_k);
+// }
 
 int main()
 {
-    pid_starter.attach(&pid_tick, 0.04); // 0.04 秒ごとに pid_tick を呼ぶ
+    // pid_starter.attach(&pid_tick, 0.04); // 0.04 秒ごとに pid_tick を呼ぶ
     while (1)
     {
         // リミットスイッチ、エンコーダー読み取り

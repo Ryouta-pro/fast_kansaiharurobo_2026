@@ -68,22 +68,22 @@ void sensor_processing(int16_t(&pwm_value), bool limit, bool up_down)
 //     // pid_control のシグネチャに合わせて呼ぶ（グローバル変数を参照）
 //     pid_control(pwm1[2], encoder_value[0], want_k);
 // }
-void pid_control(int16_t(&pwm_value), int16_t encoder_value, int16_t want_angle)
-{
-    int error = want_angle - encoder_value * k;
-    float p_control = error;
-    i_control += error * dt;
-    float d_control = (error - before_error) / dt;
+// void pid_control(int16_t(&pwm_value), int16_t encoder_value, int16_t want_angle)
+// {
+//     int error = want_angle - encoder_value * k;
+//     float p_control = error;
+//     i_control += error * dt;
+//     float d_control = (error - before_error) / dt;
 
-    pwm_value = p_gain * p_control + i_gain * i_control + d_gain * d_control;
-    if (pwm_value > 20000)
-    {
-        pwm_value = 20000;
-    }
-    else if (pwm_value < -20000)
-    {
-        pwm_value = -20000;
-    }
-    // printf("now:%d,output:%d\n", k * encoder_value, pwm_value);
-    before_error = error;
-}
+//     pwm_value = p_gain * p_control + i_gain * i_control + d_gain * d_control;
+//     if (pwm_value > 20000)
+//     {
+//         pwm_value = 20000;
+//     }
+//     else if (pwm_value < -20000)
+//     {
+//         pwm_value = -20000;
+//     }
+//     // printf("now:%d,output:%d\n", k * encoder_value, pwm_value);
+//     before_error = error;
+// }
