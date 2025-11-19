@@ -13,7 +13,8 @@ bool limit_value[5] = {0};
 int16_t encoder_value[5] = {0};
 int16_t pwm1[4] = {0};
 int16_t want_k = 45;
-bool controller[12] = {false}; // r2,l2,r,l, up, down, left, right, circle, cross, triangle, square
+bool controller[12] = {false}; // up, down, right, left,triangle,circle, cross,  square,l,r,l2,r2,
+// PID制御用Ticker              // up 0, down 1, right 2,left 3,triangle 4,circle 5,cross 6,square 7,l 8,r 9,l2 10,r2 11,
 Ticker pid_starter;
 
 // void pid_tick()
@@ -34,9 +35,9 @@ int main()
         controller[0] = true;
         controller[2] = true;
         controller[9] = true;
-        pwm_calculation(pwm1[0], controller[0], controller[1], 0); // カード1,r2,l2,pwm_data配列0番
-        pwm_calculation(pwm1[1], controller[2], controller[3], 1); // カード2,r,l,pwm_data配列1番
-        pwm_calculation(pwm1[2], controller[8], controller[9], 2); // カード3,circle,cross,pwm_data配列2番
+        pwm_calculation(pwm1[0], controller[10], controller[11], 0); // カード1,l2,r2,pwm_data配列0番
+        pwm_calculation(pwm1[1], controller[8], controller[9], 1);   // カード2,l,r,pwm_data配列1番
+        pwm_calculation(pwm1[2], controller[4], controller[5], 2);   // カード3,circle,cross,pwm_data配列2番
         // センサー処理
         sensor_processing(pwm1[0], limit_value[0], 1); // ロジャー下リミット
         sensor_processing(pwm1[0], limit_value[1], 0); // ロジャー上リミット
