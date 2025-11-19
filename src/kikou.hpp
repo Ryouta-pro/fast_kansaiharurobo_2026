@@ -1,6 +1,6 @@
 #include "mbed.h"
 #include <iostream>
-CAN can1(PA_11, PA_12, 1e6);
+CAN can1(PB_12, PB_13, 1e6);
 CANMessage msg;
 int pwm_data[3] = {20000, 20000, 20000};
 const float k = 360.0 / (1024.0);
@@ -14,7 +14,7 @@ float d_gain = 0.0;
 // リミットスイッチ読み取り関数
 void read_limit(bool (&is_sw_push)[5])
 {
-    if (can1.read(msg); msg.id == 10)
+    if (can1.read(msg); msg.id == 9)
     {
         uint8_t sw = msg.data[5]; // スイッチの値の内容
         for (int i = 0; i < 5; i++)
