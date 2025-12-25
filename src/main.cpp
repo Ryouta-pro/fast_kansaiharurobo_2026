@@ -20,7 +20,8 @@
 #include "FIRSTPENGUIN.hpp"
 #include <cmath>
 
-CAN can(PA_11, PA_12, 1e6);
+CAN can(PB_12, PB_13, 1e6);
+int omuni_value = 5000;
 int16_t pwm1[4] = {0};
 int16_t pwm[4] = {0};
 
@@ -39,27 +40,83 @@ int main()
 {
     while (1)
     {
+        if (controller["u"])
+        {
+            penguin.pwm[0] = omuni_value;
+            penguin.pwm[1] = -1 * omuni_value;
+            penguin.pwm[2] = -1 * omuni_value;
+            penguin.pwm[3] = omuni_value;
+            printf("a\n");
+        }
+        else if (controller["d"])
+        {
+            penguin.pwm[0] = -1 * omuni_value;
+            penguin.pwm[1] = omuni_value;
+            penguin.pwm[2] = omuni_value;
+            penguin.pwm[3] = -1 * omuni_value;
+            printf("b\n");
+        }
+        else if (controller["l"])
+        {
+            penguin.pwm[0] = omuni_value;
+            penguin.pwm[1] = omuni_value;
+            penguin.pwm[2] = -1 * omuni_value;
+            penguin.pwm[3] = -1 * omuni_value;
+            printf("c\n");
+        }
+        else if (controller["r"])
+        {
+            penguin.pwm[0] = -1 * omuni_value;
+            penguin.pwm[1] = -1 * omuni_value;
+            penguin.pwm[2] = omuni_value;
+            penguin.pwm[3] = omuni_value;
+            printf("d\n");
+        }
+        else if (controller["ci"])
+        {
+            penguin.pwm[0] = -1 * omuni_value;
+            penguin.pwm[1] = -1 * omuni_value;
+            penguin.pwm[2] = -1 * omuni_value;
+            penguin.pwm[3] = -1 * omuni_value;
+            printf("e\n");
+        }
+        else if (controller["sq"])
+        {
+            penguin.pwm[0] = omuni_value;
+            penguin.pwm[1] = omuni_value;
+            penguin.pwm[2] = omuni_value;
+            penguin.pwm[3] = omuni_value;
+            printf("f\n");
+        }
+        else
+        {
+            penguin.pwm[0] = 0;
+            penguin.pwm[1] = 0;
+            penguin.pwm[2] = 0;
+            penguin.pwm[3] = 0;
+            printf("g\n");
+        }
         // pid_control(pwm1[0],encoder_value[0],10000);
         // コントローラー入力読み取り
         read_controller();
         // controller_check();
         // リミットスイッチ、エンコーダー読み取り
-        read_limit(limit_value);
-        read_encoder(encoder_value);
+        // read_limit(limit_value);
+        // read_encoder(encoder_value);
         // コントローラー入力からPWM計算
         pwm_calculation(pwm1[0], controller["L1"], controller["R1"], 15000);  // カード1,l2,r2,pwm_data配列0番
         pwm_calculation(pwm1[1], controller["ci"], controller["sq"], 5000);   // カード2,l,r,pwm_data配列1番
         pwm_calculation(pwm1[2], controller["tri"], controller["cr"], 15000); // カード3,circle,cross,pwm_data配列2番
         // センサー処理
-        sensor_processing(pwm1[0], limit_value[0], 1); // ロジャー下リミット
-        sensor_processing(pwm1[0], limit_value[1], 0); // ロジャー上リミット
-        sensor_processing(pwm1[1], limit_value[2], 1); // garaggaraリミット
+        // sensor_processing(pwm1[0], limit_value[0], 1); // ロジャー下リミット
+        // sensor_processing(pwm1[0], limit_value[1], 0); // ロジャー上リミット
+        // sensor_processing(pwm1[1], limit_value[2], 1); // garaggaraリミット
         // 　ロリコン処理
         // pid_control(pwm1[3], encoder_value[0], 10000);
         // printf("enc:%d,%d,%d,%d,%d\n", encoder_value[0], encoder_value[1], encoder_value[2], encoder_value[3], encoder_value[4]);
         // printf("lim:%d,%d,%d,%d,%d\n", limit_value[0], limit_value[1], limit_value[2], limit_value[3], limit_value[4]);
         // printf("%d,%d,%d,%d\n", (int)(stick_value["lx"] * 100), (int)(stick_value["ly"] * 100), (int)(stick_value["rx"] * 100), (int)(stick_value["ry"] * 100));
-        mekanamu(penguin.pwm);
+        // mekanamu(penguin.pwm);
         // モタドラへcan送信
         penguin.send();
         CANMessage msg(2, (const uint8_t *)pwm1, 8);
